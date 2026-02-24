@@ -21,12 +21,12 @@ novari:
     topic:
       org-id: fintlabs-no
       domain-context: kontroll
-    application-id: fint-kontroll-template
+    application-id: fint-kontroll-orgunit-factory-v2
 
 
 spring:
   application:
-    name: fint-kontroll-template
+    name: fint-kontroll-orgunit-factory-v2
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/postgres
 #    username: postgres
@@ -35,7 +35,7 @@ spring:
 #      schema: device
   kafka:
     consumer:
-      group-id: fint-kontroll-device-catalog
+      group-id: fint-kontroll-orgunit-factory-v2
 #  jpa:
 #    hibernate:
 #      ddl-auto: none
