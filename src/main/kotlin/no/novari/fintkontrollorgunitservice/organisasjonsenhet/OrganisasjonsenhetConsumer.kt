@@ -1,8 +1,8 @@
-package no.novari.fintkontrollorgunitfactoryv2.organisasjonsenhet
+package no.novari.fintkontrollorgunitservice.organisasjonsenhet
 
 import no.fint.model.resource.administrasjon.organisasjon.OrganisasjonselementResource
 import no.novari.cache.FintCache
-import no.novari.fintkontrollorgunitfactoryv2.FintLinkUtils
+import no.novari.fintkontrollorgunitservice.FintLinkUtils
 import no.novari.kafka.consuming.ErrorHandlerConfiguration
 import no.novari.kafka.consuming.ErrorHandlerFactory
 import no.novari.kafka.consuming.ListenerConfiguration

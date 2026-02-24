@@ -1,9 +1,9 @@
-package no.novari.fintkontrollorgunitfactoryv2
+package no.novari.fintkontrollorgunitservice
 
 import no.fint.model.resource.administrasjon.organisasjon.OrganisasjonselementResource
 import no.novari.cache.FintCache
 import no.novari.cache.FintCacheManager
-import no.novari.fintkontrollorgunitfactoryv2.orgunit.OrgUnit
+import no.novari.fintkontrollorgunitservice.orgunit.OrgUnit
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.util.Locale

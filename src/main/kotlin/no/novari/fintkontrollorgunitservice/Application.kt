@@ -1,4 +1,4 @@
-package no.novari.fintkontrollorgunitfactoryv2
+package no.novari.fintkontrollorgunitservice
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan

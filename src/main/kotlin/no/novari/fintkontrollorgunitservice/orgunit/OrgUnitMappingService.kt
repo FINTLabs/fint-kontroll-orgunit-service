@@ -1,7 +1,7 @@
-package no.novari.fintkontrollorgunitfactoryv2.orgunit
+package no.novari.fintkontrollorgunitservice.orgunit
 
 import no.fint.model.resource.administrasjon.organisasjon.OrganisasjonselementResource
-import no.novari.fintkontrollorgunitfactoryv2.organisasjonsenhet.OrganisasjonselementService
+import no.novari.fintkontrollorgunitservice.organisasjonsenhet.OrganisasjonselementService
 import org.springframework.stereotype.Service
 
 @Service

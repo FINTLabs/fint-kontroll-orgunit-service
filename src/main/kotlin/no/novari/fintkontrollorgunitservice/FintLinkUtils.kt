@@ -1,8 +1,8 @@
-package no.novari.fintkontrollorgunitfactoryv2
+package no.novari.fintkontrollorgunitservice
 
 import no.fint.model.resource.FintLinks
 import no.fint.model.resource.Link
-import no.novari.fintkontrollorgunitfactoryv2.organisasjonsenhet.NoSuchLinkException
+import no.novari.fintkontrollorgunitservice.organisasjonsenhet.NoSuchLinkException
 
 class FintLinkUtils {
     companion object {

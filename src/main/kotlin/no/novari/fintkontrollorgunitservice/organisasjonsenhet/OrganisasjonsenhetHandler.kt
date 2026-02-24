@@ -1,4 +1,4 @@
-package no.novari.fintkontrollorgunitfactoryv2.organisasjonsenhet
+package no.novari.fintkontrollorgunitservice.organisasjonsenhet
 
 import org.springframework.stereotype.Service
 
