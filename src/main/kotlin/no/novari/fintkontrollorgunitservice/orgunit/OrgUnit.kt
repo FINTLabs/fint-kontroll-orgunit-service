@@ -1,6 +1,8 @@
 package no.novari.fintkontrollorgunitservice.orgunit
 
+import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -16,7 +18,9 @@ data class OrgUnit(
     val name: String,
     val shortName: String?,
     val parentRef: String,
-    val childrenRef: List<String>?,
-    val allSubOrgUnitsRef: List<String>?,
     val managerRef: String?,
+    @ElementCollection(fetch = FetchType.EAGER)
+    val childrenRef: List<String>?,
+    @ElementCollection(fetch = FetchType.EAGER)
+    val allSubOrgUnitsRef: List<String>?,
 )
