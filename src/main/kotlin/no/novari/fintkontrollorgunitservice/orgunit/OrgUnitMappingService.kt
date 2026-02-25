@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class OrgUnitMappingService(
-    private val orgUnitMappingService: OrgUnitMappingService,
     private val organisasjonselementService: OrganisasjonselementService,
 ) {
     fun mapOrganisasjonsenhetToOrgUnit(organisasjonselement: OrganisasjonselementResource): OrgUnit {
