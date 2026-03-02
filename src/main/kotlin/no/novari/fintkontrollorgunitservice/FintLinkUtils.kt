@@ -7,10 +7,6 @@ import no.novari.fintkontrollorgunitservice.organisasjonsenhet.NoSuchLinkExcepti
 class FintLinkUtils {
     companion object {
         @JvmStatic
-        fun getSystemIdFromPath(path: String): String {
-            return path.substring(path.lastIndexOf('/') + 1)
-        }
-
         fun getSystemIdFromMessageKey(path: String): String {
             return path.substringAfterLast('/')
         }

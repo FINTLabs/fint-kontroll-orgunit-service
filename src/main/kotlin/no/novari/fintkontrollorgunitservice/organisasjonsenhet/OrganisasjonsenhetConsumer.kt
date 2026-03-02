@@ -23,6 +23,7 @@ class OrganisasjonsenhetConsumer(
     private val organisasjonselementCache: FintCache<String, OrganisasjonselementResource>,
     private val parameterizedListenerContainerFactoryService: ParameterizedListenerContainerFactoryService,
     private val errorHandlerFactory: ErrorHandlerFactory,
+    private val organisasjonsenhetHandler: OrganisasjonsenhetHandler,
 ) {
     @Bean
     fun organisasjonselementConsumer() =
@@ -30,12 +31,17 @@ class OrganisasjonsenhetConsumer(
             topicName = "administrasjon-organisasjon-organisasjonselement",
             consumingClass = OrganisasjonselementResource::class,
             cache = organisasjonselementCache,
+            handler = { key, value ->
+                logger.info("Consumed: $key :: ${value.navn ?: "no navn"} ")
+                organisasjonsenhetHandler.handle(key, value)
+            },
         )
 
     private fun <T : Any> createContainer(
         topicName: String,
         consumingClass: KClass<T>,
         cache: FintCache<String, T>,
+        handler: (String, T) -> Unit,
     ): ConcurrentMessageListenerContainer<String, T> {
         val nameParameters =
             EntityTopicNameParameters
@@ -74,7 +80,8 @@ class OrganisasjonsenhetConsumer(
                     val key = FintLinkUtils.getSystemIdFromMessageKey(record.key())
                     val value = record.value()
                     cache.put(key, value)
-                    logger.info("Added $key to cache. With value $value")
+                    logger.info("Added $key to cache")
+                    handler(key, value)
                 },
                 listenerConfiguration,
                 errorHandler,

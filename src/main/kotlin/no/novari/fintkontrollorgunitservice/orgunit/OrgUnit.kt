@@ -13,14 +13,12 @@ import jakarta.persistence.Table
 data class OrgUnit(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    val resourceId: String,
-    val organisationUnitId: String,
-    val name: String,
-    val shortName: String?,
-    val parentRef: String,
-    val managerRef: String?,
+    val resourceId: String = "",
+    val organisationUnitId: String = "",
+    val name: String = "",
+    val shortName: String? = null,
+    val parentRef: String = "",
+    val managerRef: String? = null,
     @ElementCollection(fetch = FetchType.EAGER)
-    val childrenRef: List<String>?,
-    @ElementCollection(fetch = FetchType.EAGER)
-    val allSubOrgUnitsRef: List<String>?,
+    val childrenRef: MutableList<String> = mutableListOf(),
 )
