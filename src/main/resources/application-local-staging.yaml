@@ -7,6 +7,10 @@ fint:
     authorization:
       authorized-role: https://role-catalog.vigoiks.no/vigo/kontroll/user
       authorized-org-id: vigo.no
+    orgunitdistance:
+        publishing:
+            initial-delay: 5000
+            fixed-delay: 15000
 
 novari:
   cache:

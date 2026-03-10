@@ -12,7 +12,7 @@ class OrganisasjonselementService {
     fun getParentOrganisasjonselementOrganisasjonsId(
         organisasjonselementResource: OrganisasjonselementResource,
     ): String {
-        return organisasjonselementResource.organisasjonsnummer.toString()
+        return (organisasjonselementResource.overordnet.firstOrNull()?.href)?.substringAfterLast("/") ?: ""
     }
 
     fun getResourceId(organisasjonselement: OrganisasjonselementResource): String {

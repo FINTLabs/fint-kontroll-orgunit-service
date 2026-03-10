@@ -1,4 +1,4 @@
-package no.novari.fintkontrollorgunitservice.orgunit
+package no.novari.fintkontrollorgunitservice.orgunitdistance
 
 import no.novari.kafka.producing.ParameterizedProducerRecord
 import no.novari.kafka.producing.ParameterizedTemplate
@@ -12,31 +12,31 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.Duration
 
-private val logger = LoggerFactory.getLogger(OrgUnitPublishingService::class.java)
+private val logger = LoggerFactory.getLogger(OrgUnitDistanceProducerService::class.java)
 
 @Service
-class OrgUnitPublishingService(
+class OrgUnitDistanceProducerService(
     parameterizedTemplateFactory: ParameterizedTemplateFactory,
     entityTopicService: EntityTopicService,
 ) {
-    private val parameterizedTemplat: ParameterizedTemplate<OrgUnitDTO> =
-        parameterizedTemplateFactory.createTemplate(OrgUnitDTO::class.java)
+    private val parameterizedTemplate: ParameterizedTemplate<OrgunitDistance> =
+        parameterizedTemplateFactory.createTemplate(OrgunitDistance::class.java)
 
-    private val entityTopicNameParameters: EntityTopicNameParameters =
-        EntityTopicNameParameters
-            .builder()
-            .resourceName("orgunit")
-            .topicNamePrefixParameters(topicNameParameters())
-            .build()
-
-    private fun topicNameParameters() =
+    private fun topicNamePrefixParameters() =
         TopicNamePrefixParameters
             .stepBuilder()
             .orgIdApplicationDefault()
             .domainContextApplicationDefault()
             .build()
 
-    fun entityTopicConfiguration() =
+    private val entityTopicNameParameters: EntityTopicNameParameters =
+        EntityTopicNameParameters
+            .builder()
+            .topicNamePrefixParameters(topicNamePrefixParameters())
+            .resourceName("orgunitdistance")
+            .build()
+
+    private fun entityTopicConfiguration() =
         EntityTopicConfiguration
             .stepBuilder()
             .partitions(1)
@@ -52,20 +52,25 @@ class OrgUnitPublishingService(
         )
     }
 
-    fun publishOrgUnit(orgUnitDTO: OrgUnitDTO) {
-        val producerRecord =
-            ParameterizedProducerRecord
-                .builder<OrgUnitDTO>()
-                .topicNameParameters(entityTopicNameParameters)
-                .key(orgUnitDTO.organisationUnitId)
-                .value(orgUnitDTO)
-                .build()
+    fun publish(allOrgUnitDistances: List<OrgunitDistance>): List<OrgunitDistance> {
+        logger.info("Publishing ${allOrgUnitDistances.size} orgunit distances")
 
-        parameterizedTemplat.send(producerRecord)
-        logger.info("Published orgUnit: ${orgUnitDTO.organisationUnitId} :: ${orgUnitDTO.name}")
+        allOrgUnitDistances.forEach { orgUnitDistance ->
+            logger.debug("Publishing orgunit distance: ${orgUnitDistance.id}")
+            publish(orgUnitDistance)
+        }
+        return allOrgUnitDistances
     }
 
-    fun publishAllOrgUnits(orgUnits: List<OrgUnitDTO>) {
-        orgUnits.forEach { publishOrgUnit(it) }
+    fun publish(orgUnitDistance: OrgunitDistance) {
+        val producerRecord =
+            ParameterizedProducerRecord
+                .builder<OrgunitDistance>()
+                .topicNameParameters(entityTopicNameParameters)
+                .key(orgUnitDistance.id)
+                .value(orgUnitDistance)
+                .build()
+        parameterizedTemplate.send(producerRecord)
+        logger.info("Published orgunit distance to kafka: ${orgUnitDistance.id}")
     }
 }
