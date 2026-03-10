@@ -43,3 +43,7 @@ orgUnitId og subOrgUnitId er referanser til organisationUnitId på OrgUnit objec
 ### publiserer
 * .kontroll.entity.orgunit
 * .kontroll.entity.orgunitdistance
+
+
+## api
+**mangler dokumentasjon**
