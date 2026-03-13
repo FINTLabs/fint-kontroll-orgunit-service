@@ -10,7 +10,7 @@ private val logger = LoggerFactory.getLogger(OrgUnitMappingService::class.java)
 @Service
 class OrgUnitMappingService(
     private val organisasjonselementService: OrganisasjonselementService,
-    private val orgUnitService: OrgUnitService,
+    private val orgUnitSubOrgUnitService: OrgUnitSubOrgUnitService,
 ) {
     fun mapOrganisasjonsenhetToOrgUnit(
         organisasjonselement: OrganisasjonselementResource,
@@ -48,11 +48,10 @@ class OrgUnitMappingService(
         )
     }
 
-    fun mapOrgUnitToOrgUnitDTO(orgUnit: OrgUnit): OrgUnitDTO {
-        // val subOrgUnits = listOf(orgUnit.organisationUnitId) + orgUnit.childrenRef
-        val allSubOrgUnits = orgUnitService.getAllDescendantOrganisationUnitIds(orgUnit.organisationUnitId)
+    fun mapOrgUnitToOrgUnitKafkaDTO(orgUnit: OrgUnit): OrgUnitKafkaDTO {
+        val allSubOrgUnits = orgUnitSubOrgUnitService.getAllDescendantOrganisationUnitIds(orgUnit.organisationUnitId)
 
-        return OrgUnitDTO(
+        return OrgUnitKafkaDTO(
             id = orgUnit.id ?: 0,
             resourceId = orgUnit.resourceId,
             organisationUnitId = orgUnit.organisationUnitId,
@@ -62,6 +61,17 @@ class OrgUnitMappingService(
             managerRef = orgUnit.managerRef,
             childrenRef = orgUnit.childrenRef,
             allSubOrgUnitsRef = allSubOrgUnits as MutableList<String>,
+        )
+    }
+
+    fun mapOrgUnitToOrgUnitApiDTO(orgUnit: OrgUnit): OrgUnitApiDTO {
+        return OrgUnitApiDTO(
+            id = orgUnit.id ?: 0,
+            name = orgUnit.name,
+            organisationUnitId = orgUnit.organisationUnitId,
+            parentRef = orgUnit.parentRef,
+            // parentName = orgUnit.parentName,
+            childrenRef = orgUnit.childrenRef,
         )
     }
 }

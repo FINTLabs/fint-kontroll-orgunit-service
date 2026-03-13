@@ -1,6 +1,6 @@
 package no.novari.fintkontrollorgunitservice.orgunit
 
-data class OrgUnitDTO(
+data class OrgUnitKafkaDTO(
     val id: Long,
     val resourceId: String,
     val organisationUnitId: String,

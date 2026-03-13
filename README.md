@@ -46,4 +46,5 @@ orgUnitId og subOrgUnitId er referanser til organisationUnitId på OrgUnit objec
 
 
 ## api
-**mangler dokumentasjon**
+Dokumentert med Swagger, se http://localhost:\<port\>/swagger-ui/index.html
+

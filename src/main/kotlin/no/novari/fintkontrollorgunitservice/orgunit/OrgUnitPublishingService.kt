@@ -19,8 +19,8 @@ class OrgUnitPublishingService(
     parameterizedTemplateFactory: ParameterizedTemplateFactory,
     entityTopicService: EntityTopicService,
 ) {
-    private val parameterizedTemplat: ParameterizedTemplate<OrgUnitDTO> =
-        parameterizedTemplateFactory.createTemplate(OrgUnitDTO::class.java)
+    private val parameterizedTemplat: ParameterizedTemplate<OrgUnitKafkaDTO> =
+        parameterizedTemplateFactory.createTemplate(OrgUnitKafkaDTO::class.java)
 
     private val entityTopicNameParameters: EntityTopicNameParameters =
         EntityTopicNameParameters
@@ -52,20 +52,20 @@ class OrgUnitPublishingService(
         )
     }
 
-    fun publishOrgUnit(orgUnitDTO: OrgUnitDTO) {
+    fun publishOrgUnit(orgUnitKafkaDTO: OrgUnitKafkaDTO) {
         val producerRecord =
             ParameterizedProducerRecord
-                .builder<OrgUnitDTO>()
+                .builder<OrgUnitKafkaDTO>()
                 .topicNameParameters(entityTopicNameParameters)
-                .key(orgUnitDTO.organisationUnitId)
-                .value(orgUnitDTO)
+                .key(orgUnitKafkaDTO.organisationUnitId)
+                .value(orgUnitKafkaDTO)
                 .build()
 
         parameterizedTemplat.send(producerRecord)
-        logger.info("Published orgUnit: ${orgUnitDTO.organisationUnitId} :: ${orgUnitDTO.name}")
+        logger.info("Published orgUnit: ${orgUnitKafkaDTO.organisationUnitId} :: ${orgUnitKafkaDTO.name}")
     }
 
-    fun publishAllOrgUnits(orgUnits: List<OrgUnitDTO>) {
+    fun publishAllOrgUnits(orgUnits: List<OrgUnitKafkaDTO>) {
         orgUnits.forEach { publishOrgUnit(it) }
     }
 }

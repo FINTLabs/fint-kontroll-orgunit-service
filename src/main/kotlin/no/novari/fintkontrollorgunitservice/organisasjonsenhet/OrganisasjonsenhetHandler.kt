@@ -33,6 +33,6 @@ class OrganisasjonsenhetHandler(
         val mappedOrgUnit =
             orgUnitMappingService.mapOrganisasjonsenhetToOrgUnit(kafkaValue, existOrgUnit)
         orgUnitRepository.save(mappedOrgUnit)
-        orgUnitPublishingService.publishOrgUnit(orgUnitMappingService.mapOrgUnitToOrgUnitDTO(mappedOrgUnit))
+        orgUnitPublishingService.publishOrgUnit(orgUnitMappingService.mapOrgUnitToOrgUnitKafkaDTO(mappedOrgUnit))
     }
 }
