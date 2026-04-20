@@ -19,8 +19,7 @@ class OrgUnitConsumer(
             "orgunit",
             OrgUnit::class,
             orgUnitCache,
-            { key, value ->
-                logger.info("Consumed published orgUnit with key: $key  ")
-            },
-        )
+        ) { key, value ->
+            logger.info("Consumed published orgUnit with key: $key  ")
+        }
 }

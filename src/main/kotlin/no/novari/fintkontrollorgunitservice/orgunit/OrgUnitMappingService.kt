@@ -64,6 +64,12 @@ class OrgUnitMappingService(
         )
     }
 
+    fun mapOrgunitToOrgUnitApiDTO(orgUnits: List<OrgUnit>): List<OrgUnitApiDTO> {
+        val orgUnitApiDTOs = orgUnits.map { mapOrgUnitToOrgUnitApiDTO(it) }
+
+        return orgUnitApiDTOs
+    }
+
     fun mapOrgUnitToOrgUnitApiDTO(orgUnit: OrgUnit): OrgUnitApiDTO {
         return OrgUnitApiDTO(
             id = orgUnit.id ?: 0,
