@@ -40,7 +40,7 @@ class OrgUnitDistanceProducerService(
         EntityTopicConfiguration
             .stepBuilder()
             .partitions(1)
-            .lastValueRetentionTime(Duration.ofDays(10))
+            .lastValueRetainedForever()
             .nullValueRetentionTime(Duration.ofDays(10))
             .cleanupFrequency(EntityCleanupFrequency.NORMAL)
             .build()

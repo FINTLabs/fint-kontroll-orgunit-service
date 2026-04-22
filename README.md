@@ -37,12 +37,34 @@ Tjenesten er bygd på Spring Boot/kotlin og bruker Kafka for kommunikasjon mello
 orgUnitId og subOrgUnitId er referanser til organisationUnitId på OrgUnit objectet.
 
 ## kafka topics
-### konsumerer
+### consumer
 * .kontroll.entity.administrasjon-organisasjon-organisasjonselement
 
-### publiserer
+| Property                                |
+|-----------------------------------------|
+| .continueFromPreviousOffsetOnAssignment |
+
 * .kontroll.entity.orgunit
-* .kontroll.entity.orgunitdistance
+
+| Property           |
+|--------------------|
+| .seekToBeginningOnAssignment              |
+
+
+### producer
+* .kontroll.entity.orgunit
+
+| Property                                |
+|-----------------------------------------|
+| .lastValueRetainedForever |
+
+
+* .kontroll.entity.orgunit-distance
+
+| Property                                |
+|-----------------------------------------|
+| .lastValueRetainedForever |
+
 
 
 ## api
