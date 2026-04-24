@@ -2,6 +2,8 @@
 
 Denne tjenesten er en del av FINT-KONTROLL. Den konsumerer organisasjonselementer fra Kafka, mapper dem til `OrgUnit`, lagrer dem i databasen og publiserer resultatet videre til Kafka. Tjenesten beregner også `OrgunitDistance` og eksponerer et API for oppslag i orgunit-strukturen.
 
+
+Se også [Arkitettur, struktur og flyt](docs/architecture.md)
 ## Beskrivelse
 
 1. Leser `OrganisasjonselementResource` fra Kafka.
