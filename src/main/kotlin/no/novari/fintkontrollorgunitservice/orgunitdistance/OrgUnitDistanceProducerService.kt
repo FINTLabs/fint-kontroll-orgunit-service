@@ -56,6 +56,7 @@ class OrgUnitDistanceProducerService(
         logger.info("Publishing ${allOrgUnitDistances.size} orgunit distances")
 
         allOrgUnitDistances.forEach { orgUnitDistance ->
+
             logger.debug("Publishing orgunit distance: ${orgUnitDistance.id}")
             publish(orgUnitDistance)
         }

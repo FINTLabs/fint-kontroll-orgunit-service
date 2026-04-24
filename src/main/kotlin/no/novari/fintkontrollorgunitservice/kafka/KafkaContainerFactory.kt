@@ -66,7 +66,7 @@ class KafkaContainerFactory(
                     val value = record.value()
 
                     cache.put(key, value)
-                    logger.info("Added $key to cache from record key: ${record.key()}")
+                    logger.debug("Added $key to cache from record key: ${record.key()}")
 
                     handler(key, value)
                 },

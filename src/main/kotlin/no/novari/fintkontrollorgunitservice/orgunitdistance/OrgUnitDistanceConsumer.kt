@@ -20,6 +20,6 @@ class OrgUnitDistanceConsumer(
             OrgunitDistance::class,
             orgUnitDistanceCache,
         ) { key, value ->
-            logger.info("Consumed published orgUnitDistance with key: $key  ")
+            logger.debug("Consumed published orgUnitDistance with key: $key  ")
         }
 }

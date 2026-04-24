@@ -23,16 +23,24 @@ class OrgUnitDistancePublishingComponent(
             buildList {
                 orgUnitDistanceService.getAllOrgUnits().forEach { orgUnit ->
                     run {
-                        logger.info("Creating distances for orgUnit: ${orgUnit.organisationUnitId} :: ${orgUnit.name}")
+                        logger.debug("Creating distances for orgUnit: ${orgUnit.organisationUnitId} :: ${orgUnit.name}")
                         addAll(createDistancesForOrgUnit(orgUnit))
                     }
                 }
             }
 
-        val publishedOrgUnitDistances = orgUnitDistanceProducerService.publish(allOrgUnitDistances)
+        val orgUnitDistanceToPublish =
+            allOrgUnitDistances.filter {
+                orgUnitDistanceService.needsUpdate(it)
+            }
+        logger.info(
+            "Publishing ${orgUnitDistanceToPublish.size} of ${allOrgUnitDistances.size} orgUnit distances because they are missing or changed in cache",
+        )
+
+        val publishedOrgUnitDistances = orgUnitDistanceProducerService.publish(orgUnitDistanceToPublish)
 
         // TODO: flytte dette til publiseringskomponenten. Ikke retur. logging i komponenten
-        logger.info("Published {} orgUnitDistances", publishedOrgUnitDistances.size)
+        logger.debug("Published {} orgUnitDistances", publishedOrgUnitDistances.size)
         logger.info("Finished publishing orgUnit distance")
     }
 
@@ -64,7 +72,7 @@ class OrgUnitDistancePublishingComponent(
                     ),
                 )
 
-                logger.info(
+                logger.debug(
                     "From orgUnitId: {} - to orgUnitId: {} - distance: {}",
                     startOrgUnitId,
                     currentOrgUnit.organisationUnitId,
@@ -72,6 +80,6 @@ class OrgUnitDistancePublishingComponent(
                 )
             }
 
-            logger.info("{} has {} levels of orgunits above", orgUnit.name, distance)
+            logger.debug("{} has {} levels of orgunits above", orgUnit.name, distance)
         }
 }
