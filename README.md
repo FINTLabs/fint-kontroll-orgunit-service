@@ -1,19 +1,20 @@
 # FINT-KONTROLL-ORGUNIT-SERVICE
 
-Denne tjenesten er en del av FINT-KONTROLL. Den erstatter FINT-KONTROLL-ORGUNIT-FACTORY og FINT-KONTROLL-ORGUNIT-CATALOG
+Denne tjenesten er en del av FINT-KONTROLL. Den konsumerer organisasjonselementer fra Kafka, mapper dem til `OrgUnit`, lagrer dem i databasen og publiserer resultatet videre til Kafka. Tjenesten beregner også `OrgunitDistance` og eksponerer et API for oppslag i orgunit-strukturen.
 
 ## Beskrivelse
-Tjenesten konsumerer organisasjonselementer fra Kafka. Disse er hentet fra administrasjon.organisasjon.organisasjonselement i FINT.
-Disse organisasjonselementene blir mappet om til OrgUnit, lagret i en database og publisert på kafka som andre tjenester kan konsumere.
 
-Tjenesten genererer også OrgUnitDistance entiteter og publiserer de ut til Kafka. OrgUnitDistance entiteter beskriver antall ledd i organisasjonsstrukturen mellom de ulike organisasjonsenhentene.
+1. Leser `OrganisasjonselementResource` fra Kafka.
+2. Lagrer innkommende meldinger i cache.
+3. Mapper data til intern `OrgUnit`.
+4. Oppdaterer databasen.
+5. Publiserer `OrgUnit` til Kafka.
+6. Leser publiserte `OrgUnit` tilbake inn i cache.
+7. Genererer og publiserer `OrgunitDistance` periodisk.
+8. Eksponerer orgunits via REST API.
 
-
-## Teknologi
-Tjenesten er bygd på Spring Boot/kotlin og bruker Kafka for kommunikasjon mellom tjenester.
 
 ## OrgUnit modell
-
 | Fieldname           | Type           | Nullable |
 |---------------------|---------------|----------|
 | id                  | Long          | Yes      |
@@ -38,7 +39,11 @@ orgUnitId og subOrgUnitId er referanser til organisationUnitId på OrgUnit objec
 
 ## kafka topics
 ### consumer
-* .kontroll.entity.administrasjon-organisasjon-organisasjonselement
+- `administrasjon-organisasjon-organisasjonselement`
+- `orgunit`
+- `orgunitdistance`
+
+**.kontroll.entity.administrasjon-organisasjon-organisasjonselement**
 
 | Property                                |
 |-----------------------------------------|
@@ -105,22 +110,7 @@ Eksempel på organisasjonselement:
 }
 ```
 
-* .kontroll.entity.orgunit
-
-| Property           |
-|--------------------|
-| .seekToBeginningOnAssignment              |
-
-```json
-Eksempel: se producuser
-```
-
-### producer
-* .kontroll.entity.orgunit
-
-| Property                                |
-|-----------------------------------------|
-| .lastValueRetainedForever |
+**.kontroll.entity.orgunit**
 
 ```json
 Eksempel på orgUnit
@@ -143,11 +133,12 @@ Eksempel på orgUnit
 }
 ```
 
-* .kontroll.entity.orgunit-distance
 
-| Property                                |
-|-----------------------------------------|
-| .lastValueRetainedForever |
+**kontroll.entity.orgunitdistance**
+
+| Property           |
+|--------------------|
+| .seekToBeginningOnAssignment              |
 
 ```json
 Eksempler på orgUnitDistance
@@ -169,6 +160,40 @@ og
 
 
 
-## api
-Dokumentert med Swagger, se http://localhost:\<port\>/swagger-ui/index.html
+### producer
+- `orgunit`
+- `orgunitdistance`
+
+**.kontroll.entity.orgunit**
+
+ | Property                                |
+  |-----------------------------------------|
+  | .lastValueRetainedForever |
+
+```json
+Eksempel: se consumer
+```
+
+**.kontroll.entity.orgunit-distance**
+
+| Property                                |
+|-----------------------------------------|
+| .lastValueRetainedForever |
+
+```json
+Eksempel: se consumer
+```
+
+
+## API
+Swagger UI er tilgjengelig på `http://localhost:<port>/swagger-ui/index.html`.
+
+Endepunkter:
+- `GET /api/orgunits`
+- `GET /api/orgunits/{id}`
+- `GET /api/orgunits/{id}/parents`
+- `GET /api/orgunits/{id}/children`
+
+
+
 
